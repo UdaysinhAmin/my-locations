@@ -1,1 +1,69 @@
-<div>Edit Location</div>
+<div>
+  <form class="location-form" [formGroup]="locationForm" (ngSubmit)="onSubmit()" novalidate #thisForm="ngForm">
+    <div class="form-group">
+      <label class="center-block">Name:
+        <input class="form-control" formControlName="name" id="name">
+      </label>
+      <div *ngIf="locationForm.controls.name.invalid && (locationForm.controls.name.dirty || locationForm.controls.name.touched || thisForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="locationForm.controls.name.errors.required">
+          Name is required.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Address:
+        <textarea class="form-control" formControlName="address"></textarea>
+      </label>
+      <div *ngIf="locationForm.controls.address.invalid && (locationForm.controls.address.dirty || locationForm.controls.address.touched || thisForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="locationForm.controls.address.errors.required">
+          Address is required.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Latitude:
+        <input class="form-control" formControlName="lat"/>
+      </label>
+      <div *ngIf="locationForm.controls.lat.invalid && (locationForm.controls.lat.dirty || locationForm.controls.lat.touched || thisForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="locationForm.controls.lat.errors.required">
+          Latitude is required.
+        </div>
+        <div *ngIf="locationForm.controls.lat.errors.pattern">
+          Please enter valid Latitude
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Longitude:
+        <input class="form-control" formControlName="lang"/>
+      </label>
+      <div *ngIf="locationForm.controls.lang.invalid && (locationForm.controls.lang.dirty || locationForm.controls.lang.touched || thisForm.submitted)"
+           class="alert alert-danger">
+        <div *ngIf="locationForm.controls.lang.errors.required">
+          Longitude is required.
+        </div>
+        <div *ngIf="locationForm.controls.lang.errors.pattern">
+          Please enter valid Longitude
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Category:
+        <select class="form-control" formControlName="category">
+          <option value="" disabled selected>Select Category</option>
+          <option *ngFor="let option of categories;let i = index" [value]="option">{{option}}</option>
+        </select>
+        <div *ngIf="locationForm.controls.category.invalid && (locationForm.controls.category.dirty || locationForm.controls.category.touched || thisForm.submitted)"
+             class="alert alert-danger">
+          <div *ngIf="locationForm.controls.category.errors.required">
+            Category is required.
+          </div>
+        </div>
+      </label>
+    </div>
+    <button class="btn btn-primary">Save</button>
+  </form>
+</div>

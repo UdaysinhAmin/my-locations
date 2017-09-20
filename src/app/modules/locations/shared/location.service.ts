@@ -30,7 +30,7 @@ export class LocationService {
     return Observable.of(this.getCategoryarray());
   }
 
-  getLocation(id: number) {
+  getLocation(id) {
     let locations = this.getLocationsArray();
     if(!locations[id]){
       throw this.notFoundMessage;

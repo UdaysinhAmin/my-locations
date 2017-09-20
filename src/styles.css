@@ -33,3 +33,11 @@
 .dashboard .jumbotron{
   margin-top: 20px;
 }
+
+.location-form{
+  padding:20px;
+}
+
+.location-form .alert{
+  padding:6px 15px;
+}

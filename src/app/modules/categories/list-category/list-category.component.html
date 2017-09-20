@@ -1,0 +1,14 @@
+<div>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let category of categories;let i=index">
+      <td>{{category}}</td>
+      <td><a [routerLink]="['/categories',i]">Edit</a></td>
+      <td><a (click)="deleteCategory(i)">Delete</a></td>
+    </tr>
+  </table>
+</div>

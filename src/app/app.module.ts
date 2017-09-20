@@ -8,6 +8,8 @@ import {LocationsModule} from "./modules/locations/location.module";
 import {ReactiveFormsModule} from '@angular/forms';
 import {LocationsHome} from "./modules/locations/locations-home/locations-home.component";
 import {TopMenuComponent} from "./component/top-menu/top-menu.component";
+import {CategoryHome} from "./modules/categories/category-home/category-home.component";
+import {CategoryModule} from "./modules/categories/category.module";
 
 @NgModule({
   declarations: [
@@ -15,12 +17,14 @@ import {TopMenuComponent} from "./component/top-menu/top-menu.component";
     NavComponent,
     DashboardComponent,
     LocationsHome,
+    CategoryHome,
     TopMenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     LocationsModule,
+    CategoryModule,
     ReactiveFormsModule
   ],
   providers: [],
