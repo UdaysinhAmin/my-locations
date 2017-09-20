@@ -29,7 +29,10 @@ export class EditCategoryComponent implements OnInit{
           return this.categoryService.getCategory(+params.get('id'))
         })
         .subscribe(category => {this.category = category;this.createForm();},
-          message=>alert(message));
+          message=>{
+              this.router.navigate(['/categories']);
+              alert(message);
+          });
   }
 
   createForm() {

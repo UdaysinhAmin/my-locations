@@ -36,4 +36,8 @@ export class ListLocationComponent implements OnInit{
       })
   }
 
+  viewInMap(id){
+    window.open(`https://www.google.com/maps/@${this.locations[id].lat},${this.locations[id].lang},8z`,'_blank')
+  }
+
 }

@@ -31,11 +31,13 @@ export class LocationService {
   }
 
   getLocation(id) {
-    let locations = this.getLocationsArray();
-    if(!locations[id]){
-      throw this.notFoundMessage;
-    }
-    return Observable.of(locations[id]);
+    return Observable.create((subscriber)=>{
+      let locations = this.getLocationsArray();
+      if(!locations[id]){
+        return subscriber.error(this.notFoundMessage);
+      }
+      return subscriber.next(locations[id]);
+    });
   }
 
   createLocation(locationData){
@@ -46,22 +48,26 @@ export class LocationService {
   }
 
   updateLocation(locationData,locationId){
-    let locations = this.getLocationsArray();
-    if(!locations[locationId]){
-      throw this.notFoundMessage;
-    }
-    locations[locationId] = locationData;
-    this.setLocationArray(locations);
-    return Observable.of(locationData);
+    return Observable.create((subscriber)=>{
+      let locations = this.getLocationsArray();
+      if(!locations[locationId]){
+        return subscriber.error(this.notFoundMessage);
+      }
+      locations[locationId] = locationData;
+      this.setLocationArray(locations);
+      subscriber.next(locationData);
+    });
   }
 
   deleteLocation(locationId){
-    let locations = this.getLocationsArray();
-    if(!locations[locationId]){
-      throw this.notFoundMessage;
-    }
-    locations.splice(locationId,1);
-    this.setLocationArray(locations);
-    return Observable.of(locations);
+    return Observable.create((subscriber)=>{
+      let locations = this.getLocationsArray();
+      if(!locations[locationId]){
+        return subscriber.error(this.notFoundMessage);
+      }
+      locations.splice(locationId,1);
+      this.setLocationArray(locations);
+      subscriber.next(locations);
+    });
   }
 }

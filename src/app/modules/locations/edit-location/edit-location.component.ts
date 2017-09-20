@@ -33,7 +33,10 @@ export class EditLocationComponent implements OnInit{
             return this.locationService.getLocation(+params.get('id'))
           })
           .subscribe(location => {this.location = location;this.createForm();},
-            message=>alert(message));
+            message=>{
+              this.router.navigate(['/locations']);
+              alert(message);
+            });
       },()=>alert('Error in getting the categories'));
   }
 
@@ -51,10 +54,10 @@ export class EditLocationComponent implements OnInit{
     if(!this.locationForm.invalid){
       this.locationService.updateLocation(this.locationForm.value,this.locationId)
         .subscribe(()=>{
-          alert('location added successfully.');
+          alert('location edited successfully.');
           this.router.navigate(['/locations']);
-        },()=>{
-          alert('error in adding the location.');
+        },(message)=>{
+          alert(message);
         })
     }
   }
