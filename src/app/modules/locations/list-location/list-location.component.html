@@ -1,0 +1,18 @@
+<div>
+  <table class="table">
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Category</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let location of locations;let i=index">
+      <td>{{location.name}}</td>
+      <td>{{location.address}}</td>
+      <td>{{location.category}}</td>
+      <td><a [routerLink]="['/locations',i]">Edit</a></td>
+      <td><a (click)="deleteLocation(i)">Delete</a></td>
+    </tr>
+  </table>
+</div>
