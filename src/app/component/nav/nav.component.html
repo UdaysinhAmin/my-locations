@@ -1,12 +1,19 @@
 <nav class="navbar navbar-default navbar-bottom">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">My Locations</a>
+      <a class="navbar-brand" routerLink="/dashboard" routerLinkActive="active">My Locations</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
-      <li><a routerLink="/locations" routerLinkActive="active">Locations</a></li>
-      <li><a routerLink="/categories" routerLinkActive="active">Categories</a></li>
+      <li>
+        <a routerLink="/locations" routerLinkActive="active" title="Locations">
+          <i class="fa fa-location-arrow" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/categories" routerLinkActive="active" title="Categories">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>

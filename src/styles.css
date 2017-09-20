@@ -25,7 +25,7 @@
 }
 
 
-.navbar-default .navbar-nav>li>a.active{
+.navbar-default .navbar-nav>li>a.active,.navbar-default .navbar-header a.active{
   color: #555;
   background-color: #e7e7e7;
 }

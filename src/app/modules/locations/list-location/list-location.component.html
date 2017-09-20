@@ -1,21 +1,54 @@
 <div>
-  <button class="btn btn-primary">Group By Category</button>
+  <div class="container">
+    <button class="btn btn-primary" (click)="groupByCategory()">{{isGrouped?'UnGroup By Category':'Group By Category'}}
+    </button>
+    <div *ngIf="!isGrouped">
+      <h4>Filter With Category</h4>
+      <div class="form-group">
+        <select class="form-control" #category (change)="filterByCategory(category.value)">
+          <option value="" selected>All</option>
+          <option *ngFor="let option of categories" [value]="option">{{option}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <table class="table">
     <tr>
-      <th>Name</th>
-      <th>Address</th>
-      <th>Category</th>
+      <th width="20%" (click)="sortData('name')">
+        Name
+        <i class="fa fa-sort-asc" *ngIf="sortObj.name=='asc'"></i>
+        <i class="fa fa-sort-desc" *ngIf="sortObj.name=='desc'"></i>
+      </th>
+      <th width="20%" (click)="sortData('address')">
+        Address
+        <i class="fa fa-sort-asc" *ngIf="sortObj.address=='asc'"></i>
+        <i class="fa fa-sort-desc" *ngIf="sortObj.address=='desc'"></i>
+      </th>
+      <th width="20%" (click)="sortData('category')">
+        Category
+        <i class="fa fa-sort-asc" *ngIf="sortObj.category=='asc'"></i>
+        <i class="fa fa-sort-desc" *ngIf="sortObj.category=='desc'"></i>
+      </th>
       <th></th>
       <th></th>
       <th></th>
     </tr>
-    <tr *ngFor="let location of locations;let i=index">
-      <td>{{location.name}}</td>
-      <td>{{location.address}}</td>
-      <td>{{location.category || ''}}</td>
-      <td><a [routerLink]="['/locations',i]">Edit</a></td>
-      <td><a (click)="deleteLocation(i)">Delete</a></td>
-      <td><a (click)="viewInMap(i)">View In Map</a></td>
+    <tr *ngFor="let categoryGroup of categoryGroups">
+      <td colspan="6" style="padding:0px">
+        <div *ngIf="categoryGroup.category" class="bg-primary text-white" style="padding:10px">
+          <b>{{categoryGroup.category}}</b>
+        </div>
+        <table class="table" style="margin-bottom: 0px">
+          <tr *ngFor="let location of categoryGroup.locations">
+            <td width="20%">{{location.name}}</td>
+            <td width="20%">{{location.address}}</td>
+            <td width="20%">{{location.category || ''}}</td>
+            <td><a [routerLink]="['/locations',location.id]">Edit</a></td>
+            <td><a (click)="deleteLocation(location.id)">Delete</a></td>
+            <td><a (click)="viewInMap(location)">View In Map</a></td>
+          </tr>
+        </table>
+      </td>
     </tr>
   </table>
 </div>

@@ -6,6 +6,7 @@ import {FormGroup, Validators,FormControl} from "@angular/forms";
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CategoryService} from "../shared/category.service";
 import 'rxjs/add/operator/switchMap';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'edit-category',
@@ -14,6 +15,7 @@ import 'rxjs/add/operator/switchMap';
 export class EditCategoryComponent implements OnInit{
   categoryForm: FormGroup;
   categories =[];
+  locations = [];
   categoryId;
   category;
   constructor(
@@ -28,11 +30,22 @@ export class EditCategoryComponent implements OnInit{
           this.categoryId = params.get('id');
           return this.categoryService.getCategory(+params.get('id'))
         })
-        .subscribe(category => {this.category = category;this.createForm();},
+        .subscribe(category => {
+            this.category = category;
+            this.createForm();
+            this.getLocations();
+          },
           message=>{
               this.router.navigate(['/categories']);
               alert(message);
           });
+  }
+
+  getLocations(){
+    this.categoryService.getLocations()
+      .subscribe((locations)=>{
+          this.locations = _.filter(locations,{category:this.category});
+      })
   }
 
   createForm() {

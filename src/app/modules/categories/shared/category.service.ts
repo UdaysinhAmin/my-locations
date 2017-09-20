@@ -28,6 +28,10 @@ export class CategoryService {
     localStorage.locations = JSON.stringify(locationsArray);
   }
 
+  getLocations(){
+    return Observable.of(this.getLocationsArray());
+  }
+
   getCategories(){
     return Observable.of(this.getCategoriesArray());
   }
