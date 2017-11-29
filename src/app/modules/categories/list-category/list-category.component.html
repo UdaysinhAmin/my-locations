@@ -1,4 +1,5 @@
-<div>
+<crud-page-header [options]="pageHeaderOptions" ></crud-page-header>
+<!-- <div>
   <table class="table">
     <tr>
       <th>Name</th>
@@ -6,9 +7,12 @@
       <th></th>
     </tr>
     <tr *ngFor="let category of categories;let i=index">
-      <td>{{category}}</td>
-      <td><a [routerLink]="['/categories',i]">Edit</a></td>
-      <td><a (click)="deleteCategory(i)">Delete</a></td>
+      <td>{{category.Name}}</td>
+      <td><a [routerLink]="['/categories',category.UID]">Edit</a></td>
+      <td><a (click)="deleteCategory(category.UID)">Delete</a></td>
     </tr>
   </table>
-</div>
+</div> -->
+
+<!-- <ag-grids style="width: 900px; height: 115px;" class="ag-fresh"
+[gridOptions]="gridOptions" [rowData]="rowData"></ag-grids> -->

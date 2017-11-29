@@ -1,58 +1,77 @@
-/**
- * Created by dinesh on 19/9/17.
- */
+import { Category } from './../../categories/category';
+import { Location } from './../../@shared/DTOs/Location';
+import { LocationService } from './../service/location-service';
+import { Response } from '@angular/http';
 import {Component, OnInit} from '@angular/core';
 import {FormGroup, Validators,FormControl} from "@angular/forms";
-import {LocationService} from "../shared/location.service";
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
+
+
 
 @Component({
   selector: 'edit-location',
   templateUrl: './edit-location.component.html',
 })
+
 export class EditLocationComponent implements OnInit{
   locationForm: FormGroup;
+  options;
+  locations:Location
   location;
   locationId;
-  categories =[];
+  categories:Array<Category> = []
+  
+    //categories =[];
   constructor(
     private router:Router,
     private route: ActivatedRoute,
-    private locationService: LocationService) {
+    private locationService:LocationService) {
   }
-
-  ngOnInit(){
-    window.navigator.vibrate([500, 250, 500, 250, 500, 250, 500, 250, 500, 250, 500]);
-    this.locationService.getCategories()
+  pageHeaderOptions :any= { title: 'Location', button: { text: 'Back To List ', link: '/locations', icon: 'icon-arrow-left'}};
+/**
+   * @method GetAllcategories And GetCategoryByID
+   * @description function to call the api for Get Category Detail
+   * @param options
+   * @returns {observable<T>}
+   */
+  ngOnInit(){ 
+    
+    this.locationService.getCategoties()
       .subscribe((categories)=>{
+        
         this.categories = categories;
         this.route.paramMap
           .switchMap((params: ParamMap) => {
             this.locationId = params.get('id');
-            return this.locationService.getLocation(+params.get('id'))
+            return this.locationService.getLocationById(this.locationId);
           })
-          .subscribe(location => {this.location = location;this.createForm();},
+          .subscribe((Response:any) => { 
+            
+            this.locations=Response;
+          },
             message=>{
               this.router.navigate(['/locations']);
               alert(message);
             });
+            
       },()=>alert('Error in getting the categories'));
   }
 
-  createForm() {
-    this.locationForm = new FormGroup({
-      name:new FormControl(this.location.name, Validators.required),
-      address:new FormControl(this.location.address, Validators.required),
-      lat:new FormControl(this.location.lat, [Validators.required,Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]),
-      lang:new FormControl(this.location.lang, [Validators.required,Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]),
-      category:new FormControl(this.location.category, Validators.required)
-    });
-  }
+/**
+   * @method UpdateLocation
+   * @description function to call the api and Update Location Detail
+   * @param options
+   * @returns {observable<T>}
+   */
 
   onSubmit() {
-    if(!this.locationForm.invalid){
-      this.locationService.updateLocation(this.locationForm.value,this.locationId)
+      this.options={
+        method:'put',
+        url:'/location',
+        body:this.locations
+      }
+        this.locationService.updateLocation(this.locations)
         .subscribe(()=>{
           alert('location edited successfully.');
           this.router.navigate(['/locations']);
@@ -60,5 +79,4 @@ export class EditLocationComponent implements OnInit{
           alert(message);
         })
     }
-  }
 }

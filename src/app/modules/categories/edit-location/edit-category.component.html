@@ -1,32 +1,17 @@
+<crud-page-header [options]="pageHeaderOptions" ></crud-page-header>
 <div>
-  <form class="location-form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()" novalidate #thisForm="ngForm">
+  <form class="location-form" (ngSubmit)="onSubmit()" novalidate #thisForm="ngForm">
     <div class="form-group">
       <label class="center-block">Category Name:
-        <input class="form-control" formControlName="name" id="name">
+        <input type="text" class="form-control" id="name" [(ngModel)]="category.Name" required
+        name="categoryname" #Name="ngModel">
       </label>
-      <div *ngIf="categoryForm.controls.name.invalid && (categoryForm.controls.name.dirty || categoryForm.controls.name.touched || thisForm.submitted)"
+      <div [hidden]="Name.valid || Name.pristine"
            class="alert alert-danger">
-        <div *ngIf="categoryForm.controls.name.errors.required">
-          Category name is required.
-        </div>
+              Category name is required.
       </div>
     </div>
     <button class="btn btn-primary">Save</button>
   </form>
-
-  <h2>Locations for this category</h2>
-  <table class="table">
-    <tr>
-      <th>
-        Name
-      </th>
-      <th>
-        Address
-      </th>
-    </tr>
-    <tr *ngFor="let location of locations">
-      <td>{{location.name}}</td>
-      <td>{{location.address}}</td>
-    </tr>
-  </table>
 </div>
+

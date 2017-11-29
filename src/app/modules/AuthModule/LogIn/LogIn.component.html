@@ -1,0 +1,45 @@
+<!-- <p>
+  LogIn works!
+</p>
+ <div>
+  <label>UserName: </label>
+  <input [(ngModel)]="LogInUser.UserName" placeholder="UserName" />
+</div>
+<div>
+  <label>password: </label>
+  <input [(ngModel)]="LogInUser.Password" placeholder="password"  type="password"/>
+</div>
+<button (click)="LogIn(LogInUser)">LogIn</button> -->
+
+<div class="container">
+  <!-- <div [hidden]="submitted"> -->
+    <h1>LogIn Form</h1>
+    <form  #Login="ngForm">
+<div class="form-group">
+  <label for="UserName">User Name</label>
+  <input type="text" class="form-control" id="UserName"
+         required
+         [(ngModel)]="LogInUser.UserName" name="UserName"
+         #UserName="ngModel">
+  <div [hidden]="UserName.valid || UserName.pristine"
+       class="alert alert-danger">
+    User Name is required
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="Password">Password</label>
+  <input type="text" class="form-control" id="Password"
+         required 
+         [(ngModel)]="LogInUser.Password" name="Password"
+         #Password="ngModel" type="password">
+  <div [hidden]="Password.valid || Password.pristine"
+       class="alert alert-danger">
+       Password is required
+  </div>
+</div>
+<button type="submit" class="btn btn-success" (click)="LogIn(LogInUser)" [disabled]="!Login.form.valid">Log In</button>
+<button  class="btn btn-success" (click)="Register()">Registration</button>
+<a [routerLink]="forgotpassword">Forgot password?</a>
+</form>
+</div>

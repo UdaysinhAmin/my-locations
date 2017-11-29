@@ -1,12 +1,13 @@
-/**
- * Created by dinesh on 19/9/17.
- */
+import { Category } from './../category';
+import { CategoryService } from './../service/category-service';
+import { DataService } from './../../@shared/sercices/data.service';
 import {Component, OnInit} from '@angular/core';
+import {Http} from '@angular/http';
 import {FormGroup, Validators,FormControl} from "@angular/forms";
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {CategoryService} from "../shared/category.service";
 import 'rxjs/add/operator/switchMap';
 import * as _ from 'lodash';
+import { ReactiveFormsModule }            from '@angular/forms';
 
 @Component({
   selector: 'edit-category',
@@ -14,53 +15,55 @@ import * as _ from 'lodash';
 })
 export class EditCategoryComponent implements OnInit{
   categoryForm: FormGroup;
-  categories =[];
-  locations = [];
+  options;
+  //categories =[];
+  //locations = [];
   categoryId;
-  category;
+    category:Category;
+
   constructor(
     private router:Router,
     private route: ActivatedRoute,
-    private categoryService: CategoryService) {
+    private categoryService:CategoryService) {
   }
 
+    /**
+   * @method GetAllCategory and GetCategoryById
+   * @description function to call the api and get All Category Detail 
+   *              and get All category Detail By Id
+   * @param options
+   * @returns {observable<T>}
+   */
   ngOnInit(){
+    
       this.route.paramMap
         .switchMap((params: ParamMap) => {
           this.categoryId = params.get('id');
-          return this.categoryService.getCategory(+params.get('id'))
+          return this.categoryService.GetCategoryById(this.categoryId)
         })
-        .subscribe(category => {
-            this.category = category;
-            this.createForm();
-            this.getLocations();
-          },
-          message=>{
-              this.router.navigate(['/categories']);
-              alert(message);
-          });
-  }
+        .subscribe((Category:any) => {
+        
+            this.category = Category;
+           // this.createForm();
+           },
+           message=>{
+               this.router.navigate(['/categories']);
+               alert(message);
+           });
+   }
 
-  getLocations(){
-    this.categoryService.getLocations()
-      .subscribe((locations)=>{
-          this.locations = _.filter(locations,{category:this.category});
-      })
+  /**
+   * @method UpdateCategory
+   * @description function to call the api and Update Category Detail
+   * @param options
+   * @returns {observable<T>}
+   */
+ onSubmit() {
+    this.categoryService.UpdateCategory(this.category).subscribe(response=>{
+      alert('Category updated successfully.');
+      this.router.navigate(['/categories']);
+      (message)=>alert(message)
+    })
   }
-
-  createForm() {
-    this.categoryForm = new FormGroup({
-      name:new FormControl(this.category, Validators.required)
-    });
-  }
-
-  onSubmit() {
-    if(!this.categoryForm.invalid){
-      this.categoryService.updateCategory(this.categoryForm.value.name,this.categoryId)
-        .subscribe(()=>{
-          alert('Category updated successfully.');
-          this.router.navigate(['/categories']);
-        },(message)=>alert(message))
-    }
-  }
+  pageHeaderOptions :any= { title: 'Category', button: { text: 'Back To List ', link: '/categories', icon: 'icon-arrow-left'}};
 }

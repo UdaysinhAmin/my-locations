@@ -1,0 +1,26 @@
+<div>
+    <form class="location-form" novalidate #thisForm="ngForm">
+      <div class="form-group">
+        <label class="center-block">Enter Password
+          <input type="password" class="form-control" [(ngModel)]="regis.Password" id="passwords" name="passwords" #passwords="ngModel" required>
+        </label>
+        <div [hidden]="passwords.valid || passwords.pristine"
+             class="alert alert-danger">
+              password Is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="center-block">Enter Confirm password:
+          <input type="password" class="form-control" id="ConfirmPassword"  name="ConfirmPassword" 
+          #ConfirmPassword required validateEqual="passwords">
+        </label>
+        <div [hidden]="ConfirmPassword.valid || ConfirmPassword.pristine"
+             class="alert alert-danger">
+             Confirm password is required.
+        </div>
+       
+      </div>
+      <button class="btn btn-primary" (click)="Change()">Change</button>
+    </form>
+  </div>
+  

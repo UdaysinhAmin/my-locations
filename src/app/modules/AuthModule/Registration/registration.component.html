@@ -1,0 +1,92 @@
+
+
+<div class="container">
+  <div [hidden]="submitted">
+    <h1>Registration Form</h1>
+    <form (ngSubmit)="onSubmit()" #RegisterForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name"
+               required
+               [(ngModel)]="user.Name" name="Name"
+               #Name="ngModel">
+        <div [hidden]="Name.valid || Name.pristine"
+             class="alert alert-danger">
+          Name is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="UserName">User Name</label>
+        <input type="text" class="form-control" id="UserName"
+               required
+               [(ngModel)]="user.UserName" name="UserName"
+               #UserName="ngModel">
+        <div [hidden]="UserName.valid || UserName.pristine"
+             class="alert alert-danger">
+          User Name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="text" class="form-control" id="Email"
+               required
+               [(ngModel)]="user.Email" name="Email"
+               #Email="ngModel">
+        <div [hidden]="Email.valid || Email.pristine"
+             class="alert alert-danger">
+             Email is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Password">Password</label>
+        <input type="text" class="form-control" id="Password"
+               required 
+               [(ngModel)]="user.Password" name="Password"
+               #Password="ngModel" type="password">
+        <div [hidden]="Password.valid || Password.pristine"
+             class="alert alert-danger">
+             Password is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ConfirmPassword">Confirm Password</label>
+        <input type="text" class="form-control" id="ConfirmPassword"
+               required
+               [(ngModel)]="user.ConfirmPassword" name="ConfirmPassword"
+               #ConfirmPassword="ngModel" type="password">
+        <div [hidden]="ConfirmPassword.valid || ConfirmPassword.pristine"
+             class="alert alert-danger">
+             ConfirmPassword is required
+        </div>
+      </div>
+      <div class="form-group">Contact No
+        <label for="ContactNo">Name</label>
+        <input type="text" class="form-control" id="ContactNo"
+               required
+               [(ngModel)]="user.ContactNo" name="ContactNo"
+               #ContactNo="ngModel" minlength="10"  maxlength="10">
+               
+        <div [hidden]="ContactNo.valid || ContactNo.pristine"
+             class="alert alert-danger">
+             ContactNo is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Address">Address</label>
+        <input type="text" class="form-control" id="Address"
+               required
+               [(ngModel)]="user.Address" name="Address"
+               #Address="ngModel">
+        <div [hidden]="Address.valid || Address.pristine"
+             class="alert alert-danger">
+             Address Name is required
+        </div>
+      </div>
+ 
+      <button type="submit" class="btn btn-success" (click)="Register(user)" [disabled]="!RegisterForm.form.valid">Save</button>
+      
+    </form>
+  </div>

@@ -1,0 +1,60 @@
+<br>
+
+<div>
+    <br>
+
+    <style type="text/css">
+    .inputCons
+    {
+  
+          background: white; 
+          border: 1px solid #ffa853; 
+          border-radius: 5px; 
+          box-shadow: 0 0 5px 3px #7dcaf7; 
+          color: #666; 
+          outline: none; 
+          height:40px; 
+          width: 350px; 
+        
+    }
+    
+    .buttons {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+    height: 40px;
+}
+
+.buttons:hover {
+    background-color: #008CBA;
+    color: white;
+    height: 40px;
+}
+    </style>
+            <label>Input Type</label>&nbsp;&nbsp;&nbsp;
+            <select [(ngModel)]="Types.Tp" #type class="inputCons">
+                <option *ngFor="let l of List" [value]="l.name">{{l.name}}</option>
+            </select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Enter name</label>&nbsp;&nbsp;&nbsp;
+            <input type="text" name="entername" placeholder="Enter Name"  [(ngModel)]="Types.Nm" class="inputCons"/>&nbsp;&nbsp;&nbsp;
+            <div *ngIf='type.value=="button" ||type.value=="radio" || type.value=="checkbox" '>
+                    <label>Enter Value</label>&nbsp;&nbsp;&nbsp;
+                <input type="text" name="EnterValue" placeholder="Enter Value"  [(ngModel)]="Types.Names" class="inputCons"/></div>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button name="Create" (click)="AddControls(type.value)" class="buttons">Add Control</button>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div>
+            <div *ngFor="let con of AddCon">
+                <div *ngIf='con.value == "button" || con.value == "checkbox" || con.value == "radio"' >
+                <label>{{con.Name}}</label>&nbsp;&nbsp;&nbsp;
+                <input type="{{con.Type}}" id="{{con.Id}}" name="{{con.Name}}" value="{{con.values}}" placeholder="{{con.placeholder}}"/> 
+            </div>
+                    <div *ngIf='con.value == "text" || con.value == "color" || con.value == "password" || con.value == "date" || con.value == "number"' >
+                    <label>{{con.Name}}</label>&nbsp;&nbsp;&nbsp;
+                    <input type="{{con.Type}}" id="{{con.Id}}" name="{{con.Name}}" [(ngModel)]="con.ngModel" placeholder="{{con.placeholder}}"/> 
+                </div>
+    
+        </div>

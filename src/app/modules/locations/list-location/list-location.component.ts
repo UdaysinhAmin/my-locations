@@ -1,49 +1,114 @@
-/**
- * Created by dinesh on 19/9/17.
- */
-import {Component, OnInit} from '@angular/core';
-import {LocationService} from "../shared/location.service";
-import * as _ from 'lodash';
+import { locationsRoutes } from './../location-routing.module';
+import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Location } from './../../@shared/DTOs/Location';
+import { LocationService } from './../service/location-service';
+//import { GridComponent } from './../../@shared/components/evonious-grid';
+import { getTestBed } from '@angular/core/testing';
+import { Response } from '@angular/http';
+import {DataService } from './../../@shared/sercices/data.service'
+import {Component, OnInit,Output, EventEmitter} from '@angular/core';
 
+
+import * as _ from 'lodash';
+import { debug } from 'util';
+declare let $;
 @Component({
   selector: 'list-location',
   templateUrl: './list-location.component.html',
 })
 export class ListLocationComponent implements OnInit{
+  columnDefs;
+  
+  gridOptions;
+  Options;
+  UID;
+  rowData;
+  test;
+  title:any="Location";
+  token:any="";
   categoryGroups;
-  locations;
+  
+  locations:Array<Location> = []
   isGrouped;
   categories;
-  sortObj={
-    name:'',
-    category:'',
-    address:''
-  };
-  constructor(private locationService:LocationService){
-
-  }
+  sortObj=new Location();
+  pageHeaderOptions :any= { title: 'Location', button: { text: 'Add ', link: 'add', icon: 'icon-plus'}};
+  column;
   ngOnInit() {
+    this.getCategories()
     this.getLocations();
   }
+  constructor(private locationService:LocationService,private route:Router){
+
+    this.test="pragnesh halpati"
+  this.columnDefs = [
+    {headerName: "Name", field: "Name", width: 300,sort: 'desc' ,filter: 'text'},
+    {headerName: "Address", field: "Address", width: 300 ,sort:'desc',filter: 'text'},
+    {headerName: "Category", field: "categoryName", width: 300},
+    {headerName:"Edit",field:"Action",suppressFilter: true,template:`<a>Edit</a>`,
+     onCellClicked:(event:any)=>{ 
+          if( $(event.event.target).is('a')){
+          this.route.navigate(['/locations/'+ event.data.UID]);
+           }
+        }
+      },
+      {headerName:"Delete",field:"Action",suppressFilter: true,template:`<a>Delete</a>`,
+      onCellClicked:(event:any)=>{ 
+           if( $(event.event.target).is('a')){
+              this.deleteLocation(event.data.UID);
+            }
+         }
+       }
+  ]
+  this.gridOptions ={
+    enableFilter: true,
+    column:this.columnDefs,
+    rowData:this.rowData 
+}
+}
+
+  /**
+   * @method GetAllLocations
+   * @description function to call the api and GetAll Locations Detail
+   * @param options
+   * @returns {observable<T>}
+   */
 
   private getLocations(){
-    this.locationService.getCategories()
-      .subscribe((categories)=>{
-        this.categories = categories;
-      });
-
     this.locationService.getLocations()
-      .subscribe((locations)=>{
-        _.forEach(locations,(location:any,key)=>{
-          location.id = key;
-        });
-        this.locations = locations;
-        this.categoryGroups =[{locations:_.cloneDeep(locations),category:''}];
-        this.sortData('name');
-      },()=>{
-        alert('Error in getting the locations');
-      })
+    .subscribe((locations)=>
+    {
+     this.rowData = locations
+     debugger
+      this.categoryGroups =[{locations:_.cloneDeep(this.locations),category:''}];
+      
+      this.sortData('name');
+    },()=>{
+      alert('Error in getting the locations');
+    })
   }
+
+  /**
+   * @method GetAllCategories
+   * @description function to call the api for Get All Categories Detail
+   * @param options
+   * @returns {observable<T>}
+   */
+  private getCategories(){
+    this.locationService.getCategoties()
+        .subscribe((categories)=>{
+         this.categories = categories;
+          }
+      );
+
+  }
+
+  /**
+   * @method GetByID
+   * @description function to call the api for GetLocationById  
+   * @param options
+   * @returns {observable<T>}
+   */
 
   groupByCategory(){
     if(!this.isGrouped){
@@ -56,14 +121,24 @@ export class ListLocationComponent implements OnInit{
     this.isGrouped = !this.isGrouped;
   }
 
-  deleteLocation(id){
-    this.locationService.deleteLocation(id)
-      .subscribe(()=>{
+  /**
+   * @method DeleteLocation
+   * @description function to call the api for Delete Location Detail
+   * @param options
+   * @returns {observable<T>}
+   */
+
+  deleteLocation(Id){
+    if(confirm("Are you sure to delete This Location")) {
+      this.locationService.deleteLocation(Id)
+      .subscribe((Response)=>{
         alert('Location deleted successfully.');
         this.getLocations();
       },(message)=>{
         alert(message);
       })
+    }
+  
   }
 
   sortData(sortBy){
@@ -88,6 +163,7 @@ export class ListLocationComponent implements OnInit{
       //set the current sort order to asc if previous is none.
       sortOrder = 'asc';
     }
+
     this.sortObj[sortBy] = sortOrder;
     if(sortOrder){
       _.forEach(this.categoryGroups,(category:any,index)=>{
@@ -109,11 +185,18 @@ export class ListLocationComponent implements OnInit{
     window.open(`https://www.google.com/maps/@${location.lat},${location.lang},8z`,'_blank')
   }
 
+  /**
+   * @method Filter Location By Category
+   * @description function to call for filter Location Detail by Category
+   * @param options
+   * @returns {observable<T>}
+   */
+  
   filterByCategory(category){
     let locations = _.cloneDeep(this.locations);
     if(category){
-      locations = _.filter(locations,{category:category});
+      locations = _.filter(locations,{categoryName:category});
     }
-    this.categoryGroups =[{locations:locations,category:''}];
+    this.categoryGroups =[{locations:locations,categoryName:''}];
   }
 }

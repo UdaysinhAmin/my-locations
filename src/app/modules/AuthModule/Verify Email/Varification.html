@@ -1,0 +1,15 @@
+<div>
+    <form class="location-form" novalidate #thisForm="ngForm">
+      <div class="form-group">
+        <label class="center-block">Enter Email To Varification:
+          <input type="text" class="form-control" [(ngModel)]="Regis.Email" id="name" name="Email" #Email="ngModel">
+        </label>
+        <div [hidden]="Email.valid || Email.pristine"
+             class="alert alert-danger">
+              Email Is required.
+        </div>
+      </div>
+      <button class="btn btn-primary" (click)="varify()">Varify</button>
+    </form>
+  </div>
+  
